@@ -4,7 +4,7 @@ A Chrome Extension powered by the Gemini API that helps you verify claims, fact-
 
 ## 🎥 Demonstration
 
-[Put the link for your YouTube video demonstration here]
+[Zero Hallucination Sidebar Demonstration on Youtube](https://youtu.be/HFRf8OeA2dM)
 
 ## ✨ Features
 

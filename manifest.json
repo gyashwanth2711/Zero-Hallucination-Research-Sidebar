@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Zero-Hallucination Research Sidebar",
+  "version": "1.0",
+  "description": "Verify claims using the Gemini API directly from the sidebar.",
+  "permissions": [
+    "sidePanel",
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "sidepanel/sidepanel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/content.js"],
+      "css": ["content/content.css"]
+    }
+  ],
+  "action": {
+    "default_title": "Open Truth Sidebar"
+  }
+}

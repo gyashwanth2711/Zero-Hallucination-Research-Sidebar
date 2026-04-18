@@ -36,7 +36,3 @@ A Chrome Extension powered by the Gemini API that helps you verify claims, fact-
 - Vanilla JavaScript & HTML/CSS
 - [Gemini API](https://ai.google.dev/) (gemini-2.5-flash with Google Search tool enabled for grounding)
 - Tailwind CSS
-
-## 📝 License
-
-This project is open-source and available under the MIT License.

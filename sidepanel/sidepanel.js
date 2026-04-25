@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultClaimText = document.getElementById('result-claim-text');
     const resultMarkdown = document.getElementById('result-markdown');
     const searchSuggestions = document.getElementById('search-suggestions');
+    const thinkingProcessContainer = document.getElementById('thinking-process-container');
+    const thinkingProcessContent = document.getElementById('thinking-process-content');
 
     // --- State Management ---
     // Load config from storage
@@ -35,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check if there was any recent response to show
     chrome.storage.session?.get(['latestVerification'], (data) => {
          if (data.latestVerification) {
-             renderResult(data.latestVerification.claim, data.latestVerification.text, data.latestVerification.searchHtml);
+             renderResult(data.latestVerification.claim, data.latestVerification.text, data.latestVerification.searchHtml, data.latestVerification.thoughtProcess);
          }
     });
 
@@ -70,12 +72,17 @@ document.addEventListener('DOMContentLoaded', () => {
             showStatus('Please enter an API key to test.', 'error');
             return;
         }
+
+        if (key === 'MOCK_TEST_KEY') {
+            showStatus('Mock API Key is valid!', 'success');
+            return;
+        }
         
         testKeyBtn.disabled = true;
         testKeyBtn.textContent = 'Testing...';
         
         try {
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`, {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -108,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } 
         else if (request.action === 'VERIFICATION_SUCCESS') {
             loadingState.classList.add('hidden');
-            renderResult(resultClaimText.textContent, request.result.text, request.result.searchHtml);
+            renderResult(resultClaimText.textContent, request.result.text, request.result.searchHtml, request.result.thoughtProcess);
             // Optionally persist state
             chrome.storage.session?.set({ 
                 latestVerification: { claim: resultClaimText.textContent, ...request.result }
@@ -147,8 +154,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    function renderResult(claim, text, searchHtml) {
+    function renderResult(claim, text, searchHtml, thoughtProcess) {
         resultsState.classList.remove('hidden');
+        
+        if (thoughtProcess) {
+            thinkingProcessContent.textContent = thoughtProcess;
+            thinkingProcessContainer.classList.remove('hidden');
+        } else {
+            thinkingProcessContainer.classList.add('hidden');
+        }
         
         // Use marked to parse markdown
         if (window.marked) {

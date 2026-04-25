@@ -140,6 +140,16 @@
             
             <!-- Results State -->
             <div id="results-state" class="hidden flex flex-col gap-4">
+                
+                <!-- Thinking Process Output -->
+                <div id="thinking-process-container" class="hidden bg-emerald-50 border border-emerald-200 p-3 rounded-lg text-xs text-gray-700 italic">
+                    <div class="flex items-center gap-1 font-semibold text-emerald-800 mb-1 not-italic">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-brain"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/><path d="M6.002 6.5A3 3 0 0 1 5.603 5.125"/><path d="M11.588 15.5a3 3 0 0 1-.598 2.5"/><path d="M12.412 15.5a3 3 0 0 0 .598 2.5"/><path d="M15 13a4.5 4.5 0 0 1-3 4 4.5 4.5 0 0 1-3-4"/></svg>
+                        Agent Thinking Process
+                    </div>
+                    <div id="thinking-process-content" class="max-h-60 overflow-y-auto pr-1 opacity-80 whitespace-pre-wrap"></div>
+                </div>
+
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                     <div class="flex items-start gap-2 mb-3 pb-3 border-b border-gray-100">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" class="mt-0.5 shrink-0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>

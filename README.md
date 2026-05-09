@@ -3,6 +3,8 @@
 A Chrome Extension powered by the Gemini API that helps you verify claims, fact-check information, and combat hallucinations directly from your browser sidebar. It leverages **Gemini 2.5 Flash** with **Google Search Grounding** to provide real-time evidence, sources, and a Truth Score for any text you highlight on the web.
 
 ## 🎥 Demonstration
+[Zero-Hallucination Research: Integrating MCP Servers, CRUD, and Prefab UI](https://www.youtube.com/watch?v=lawXa3gSkR0)
+
 [Zero Hallucination Sidebar with LLM thinking process output Demonstration on Youtube](https://youtu.be/f5Vc3ob0-Vo)
 
 [Zero Hallucination Sidebar Demonstration on Youtube](https://youtu.be/HFRf8OeA2dM)

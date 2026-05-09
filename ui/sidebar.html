@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Sidebar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; }
+        .card { background: white; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; overflow: hidden; }
+        .card-header { padding: 1rem; border-bottom: 1px solid #e5e7eb; background: #fdfdfd; }
+        .card-title { font-size: 1.125rem; font-weight: 600; color: #111827; }
+        .card-content { padding: 1rem; }
+        .column { display: flex; flex-direction: column; }
+        .h3 { font-size: 1rem; font-weight: 600; color: #374151; margin-top: 0.5rem; }
+        .text { font-size: 0.875rem; color: #4b5563; line-height: 1.5; }
+        .badge { display: inline-flex; align-items: center; padding: 0.125rem 0.625rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; background: #e0e7ff; color: #4338ca; width: fit-content; margin-top: 0.5rem;}
+        .code { font-family: monospace; font-size: 0.75rem; background: #f3f4f6; padding: 0.5rem; border-radius: 0.25rem; color: #1f2937; overflow-x: auto; white-space: pre-wrap; }
+        .muted { font-size: 0.75rem; color: #9ca3af; margin-top: 1rem; }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #4f46e5; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="p-4">
+    <div id="status" class="text-center text-sm text-gray-500 mb-4">Select text on a web page and right-click to "Verify".</div>
+    <div id="loader" class="loader hidden"></div>
+    <div id="app-root"></div>
+
+    <script src="sidebar.js"></script>
+</body>
+</html>

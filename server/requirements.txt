@@ -1,0 +1,7 @@
+fastmcp
+prefab-ui
+google-genai
+httpx
+python-dotenv
+fastapi
+uvicorn

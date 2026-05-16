@@ -1,11 +1,15 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.type === "VERIFY_TEXT") {
-        document.getElementById('status').innerText = "Verifying: " + message.text.substring(0, 50) + "...";
+    if (message.type === "VERIFY_TEXT" || message.type === "EVALUATE_PROMPT") {
+        const isEval = message.type === "EVALUATE_PROMPT";
+        const endpoint = isEval ? "/evaluate" : "/verify";
+        const statusPrefix = isEval ? "Evaluating Prompt: " : "Verifying: ";
+        
+        document.getElementById('status').innerText = statusPrefix + message.text.substring(0, 50) + "...";
         document.getElementById('loader').classList.remove('hidden');
         document.getElementById('app-root').innerHTML = "";
 
-        // Call the local server to run the verification RAG pipeline
-        fetch("http://127.0.0.1:8001/verify", {
+        // Call the local server to run the pipeline
+        fetch("http://127.0.0.1:8001" + endpoint, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text: message.text })
@@ -13,7 +17,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         .then(response => response.json())
         .then(uiJson => {
             document.getElementById('loader').classList.add('hidden');
-            document.getElementById('status').innerText = "Verification complete.";
+            document.getElementById('status').innerText = (isEval ? "Evaluation" : "Verification") + " complete.";
             renderPrefabUI(uiJson, document.getElementById('app-root'));
         })
         .catch(err => {

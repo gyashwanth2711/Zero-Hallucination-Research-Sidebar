@@ -1,1 +1,12 @@
-{"title": "Claim Verification: Strengths of Allopathy vs. Ayurveda", "summary": "The claim is directly supported by the search results, which explicitly state that Allopathy excels in acute care and emergencies, while Ayurveda is often preferred for chronic, long-term health management, acknowledging that each system has its strengths depending on the health condition.", "internet_data": "Allopathy excels in acute care and emergencies, while Ayurveda is often preferred for chronic, long-term health management. Each system has its strengths depending on the health condition."}
+Evaluation Results:
+{
+  "explicit_reasoning": true,
+  "structured_output": true,
+  "tool_separation": true,
+  "conversation_loop": true,
+  "instructional_framing": true,
+  "internal_self_checks": true,
+  "reasoning_type_awareness": true,
+  "fallbacks": true,
+  "overall_clarity": "The prompt is exceptionally clear, well-structured, and comprehensive. It provides explicit instructions for every stage of the reasoning process, output formatting, error handling, and multi-turn interactions. The specific self-check formula and reasoning type examples enhance its robustness and leave very little room for ambiguity."
+}

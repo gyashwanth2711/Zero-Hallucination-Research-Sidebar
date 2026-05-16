@@ -145,6 +145,109 @@ Do not use markdown blocks, just raw JSON string."""
         error_app = render_sidebar_ui(json.dumps({"title": "Error", "summary": f"An error occurred: {str(e)}", "internet_data": "N/A"}))
         return error_app.to_json()
 
+@mcp.tool(app=True)
+def render_evaluation_ui(data: str) -> PrefabApp:
+    """Generate a Prefab UI card to display prompt evaluation results."""
+    print(f"[MCP Log] Generating Evaluation UI with data length {len(data)}")
+    try:
+        parsed_data = json.loads(data)
+    except Exception as e:
+        parsed_data = {"overall_clarity": "Error parsing JSON data.", "raw": data}
+
+    with PrefabApp(css_class="max-w-md mx-auto p-4") as app:
+        with Card():
+            with CardHeader():
+                CardTitle("Prompt Evaluation Results")
+            with CardContent():
+                with Column(gap=2):
+                    H3("Criteria Assessment")
+                    Text(f"Explicit Reasoning: {parsed_data.get('explicit_reasoning', False)}")
+                    Text(f"Structured Output: {parsed_data.get('structured_output', False)}")
+                    Text(f"Tool Separation: {parsed_data.get('tool_separation', False)}")
+                    Text(f"Conversation Loop: {parsed_data.get('conversation_loop', False)}")
+                    Text(f"Instructional Framing: {parsed_data.get('instructional_framing', False)}")
+                    Text(f"Internal Self Checks: {parsed_data.get('internal_self_checks', False)}")
+                    Text(f"Reasoning Type Awareness: {parsed_data.get('reasoning_type_awareness', False)}")
+                    Text(f"Fallbacks: {parsed_data.get('fallbacks', False)}")
+                    
+                    H3("Overall Clarity")
+                    Text(parsed_data.get("overall_clarity", "No summary provided"))
+                    
+                    if "raw" in parsed_data:
+                        Code(parsed_data["raw"])
+    return app
+
+@fastapi_app.post("/evaluate")
+async def evaluate_endpoint(request: Request):
+    data = await request.json()
+    text = data.get("text", "")
+    
+    if not text:
+        return {"error": "No prompt text provided"}
+    
+    if not GEMINI_API_KEY:
+        app = render_evaluation_ui(json.dumps({"overall_clarity": "GEMINI_API_KEY is not set."}))
+        return app.to_json()
+        
+    try:
+        client = genai.Client(api_key=GEMINI_API_KEY)
+        
+        prompt = f"""You are a Prompt Evaluation Assistant.
+
+You will receive a prompt written by a student. Your job is to review this prompt and assess how well it supports structured, step-by-step reasoning in an LLM (e.g., for math, logic, planning, or tool use).
+
+Evaluate the prompt on the following criteria:
+
+1. Explicit Reasoning Instructions  
+2. Structured Output Format  
+3. Separation of Reasoning and Tools  
+4. Conversation Loop Support  
+5. Instructional Framing  
+6. Internal Self-Checks  
+7. Reasoning Type Awareness  
+8. Error Handling or Fallbacks  
+9. Overall Clarity and Robustness  
+
+Here is the student's prompt:
+\"\"\"{text}\"\"\"
+
+Respond with a structured review in exactly this JSON format, no markdown blocks:
+{{
+  "explicit_reasoning": true/false,
+  "structured_output": true/false,
+  "tool_separation": true/false,
+  "conversation_loop": true/false,
+  "instructional_framing": true/false,
+  "internal_self_checks": true/false,
+  "reasoning_type_awareness": true/false,
+  "fallbacks": true/false,
+  "overall_clarity": "String describing overall clarity."
+}}
+"""
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=prompt
+        )
+        
+        response_text = response.text.strip()
+        if response_text.startswith('```json'):
+            response_text = response_text.replace('```json', '').replace('```', '').strip()
+            
+        manage_local_notes("write", "Evaluation Results:\n" + response_text)
+        
+        try:
+            json.loads(response_text)
+            ui_app = render_evaluation_ui(response_text)
+        except:
+            ui_app = render_evaluation_ui(json.dumps({"overall_clarity": "Failed to parse JSON", "raw": response_text}))
+            
+        return ui_app.to_json()
+        
+    except Exception as e:
+        print("[Eval Error]", str(e))
+        error_app = render_evaluation_ui(json.dumps({"overall_clarity": f"An error occurred: {str(e)}"}))
+        return error_app.to_json()
+
 if __name__ == "__main__":
     print("[MCP Server] Starting MCP SSE transport on port 8002...")
     # Run the MCP server in a separate thread so it doesn't block FastAPI
